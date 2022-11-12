@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 class AccountControllerTest {
-
 	private MockMvc mockMvc;
 	private ObjectMapper om;
 
@@ -30,35 +29,35 @@ class AccountControllerTest {
 		// register the account
 		var acc = new AccountDto("Joe", "hello123");
 		this.mockMvc.perform(post("/register")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(om.writeValueAsString(acc)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(acc)))
 			.andExpect(status().isOk());
 
-		// check if we can login
+		// check if we can log in
 		this.mockMvc.perform(post("/login")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(om.writeValueAsString(acc)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(acc)))
 			.andExpect(status().isOk());
 
 		// change the password
 		var change = new ChangePasswordDto("Joe", "hello123123", "hello123");
 		this.mockMvc.perform(post("/changePassword")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(om.writeValueAsString(change)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(change)))
 			.andExpect(status().isOk());
 
 		// logout of the account
 		var signOut = new SignOutDto("Joe");
 		this.mockMvc.perform(post("/signOut")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(om.writeValueAsString(signOut)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(signOut)))
 			.andExpect(status().isOk());
 
 		// login with the new password
 		var acc1 = new AccountDto("Joe", "hello123123");
 		this.mockMvc.perform(post("/login")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(om.writeValueAsString(acc1)))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(om.writeValueAsString(acc1)))
 			.andExpect(status().isOk());
 	}
 
