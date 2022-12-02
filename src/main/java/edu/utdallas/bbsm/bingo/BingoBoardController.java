@@ -7,13 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 public class BingoBoardController {
 
-    private final List<BingoBoard> prevBoards = new ArrayList<>();
     private final BingoBoard board = new BingoBoard();
 
     @RequestMapping(value="/currentBingoBoard", method = RequestMethod.GET, produces = "application/json")
