@@ -3,6 +3,7 @@ package edu.utdallas.bbsm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.utdallas.bbsm.bingo.BingoBoardController;
 import edu.utdallas.bbsm.bingo.BingoSquare;
+import edu.utdallas.bbsm.bingo.BingoSubmission;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -25,7 +26,7 @@ public class BingoBoardControllerTest {
     }
 
     @Test
-    public void testAccount() throws Exception {
+    public void test() throws Exception {
         // get our board
         this.mockMvc.perform(get("/currentBingoBoard")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -35,7 +36,7 @@ public class BingoBoardControllerTest {
         var sq = new BingoSquare(2, 1);
         this.mockMvc.perform(post("/fillSquare")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(sq)))
+                .content(om.writeValueAsString(new BingoSubmission(sq, "submission"))))
             .andExpect(status().isOk());
 
         // get our board again
@@ -44,7 +45,7 @@ public class BingoBoardControllerTest {
             .andExpect(status().isOk());
 
         // check if filled
-        this.mockMvc.perform(get("/isSubmitted")
+        this.mockMvc.perform(get("/submission")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(sq)))
             .andExpect(status().isOk());
@@ -58,7 +59,7 @@ public class BingoBoardControllerTest {
         for (int i = 0; i < 5; i++) {
             this.mockMvc.perform(post("/fillSquare")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsString(new BingoSquare(2, i))))
+                    .content(om.writeValueAsString(new BingoSubmission(new BingoSquare(2, i), "submission"))))
                 .andExpect(status().isOk());
         }
 

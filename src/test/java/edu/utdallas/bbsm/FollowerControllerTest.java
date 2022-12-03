@@ -1,7 +1,6 @@
 package edu.utdallas.bbsm;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.utdallas.bbsm.bingo.BingoBoardController;
 import edu.utdallas.bbsm.follower.Follow;
 import edu.utdallas.bbsm.follower.FollowerController;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +24,7 @@ public class FollowerControllerTest {
     }
 
     @Test
-    public void testAccount() throws Exception {
+    public void test() throws Exception {
         // create follow
         var follow = new Follow("Joe", "Mama");
         this.mockMvc.perform(post("/follows")

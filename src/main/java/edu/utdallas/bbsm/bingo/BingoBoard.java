@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class BingoBoard {
 
     private final String[][] board = new String[5][5];
-    private final boolean[][] marked = new boolean[5][5];
+    private final String[][] submissions = new String[5][5];
 
     public BingoBoard() {
         // generates some fake data for testing purposes
@@ -20,12 +20,16 @@ public class BingoBoard {
         return board;
     }
 
-    public void fillSquare(BingoSquare sq) {
-        marked[sq.getRow()][sq.getCol()] = true;
+    public void fillSquare(BingoSquare sq, String submission) {
+        submissions[sq.getRow()][sq.getCol()] = submission;
     }
 
-    public boolean isFilled(BingoSquare sq) {
-        return marked[sq.getRow()][sq.getCol()];
+    public boolean isInBounds(BingoSquare sq) {
+        return sq.getCol() >= 0 && sq.getCol() < 5 && sq.getRow() >= 0 && sq.getRow() < 5;
+    }
+
+    public String getSubmission(BingoSquare sq) {
+        return submissions[sq.getRow()][sq.getCol()];
     }
 
     public boolean isCompleted() {
@@ -35,7 +39,7 @@ public class BingoBoard {
             j = 0;
             count = 0;
             // Checks horizontally for a win.
-            while(marked[i][j]) {
+            while(submissions[i][j] != null) {
                 count++;
                 j++;
                 if(count == 5)
@@ -45,7 +49,7 @@ public class BingoBoard {
             j = 0;
             count = 0;
             // Checks vertically for a win.
-            while(marked[i][j]) {
+            while(submissions[i][j] != null) {
                 count++;
                 j++;
                 if(count == 5)
@@ -59,7 +63,7 @@ public class BingoBoard {
     public String toString() {
         return "BingoBoard{" +
             "board=" + Arrays.deepToString(board) + "," +
-            "marked=" + Arrays.deepToString(marked) +
+            "marked=" + Arrays.deepToString(submissions) +
             '}';
     }
 }

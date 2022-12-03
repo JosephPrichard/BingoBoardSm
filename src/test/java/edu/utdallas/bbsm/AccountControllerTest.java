@@ -25,7 +25,7 @@ class AccountControllerTest {
 	}
 
 	@Test
-	public void testAccount() throws Exception {
+	public void test() throws Exception {
 		// register the account
 		var acc = new AccountDto("Joe", "hello123");
 		this.mockMvc.perform(post("/register")

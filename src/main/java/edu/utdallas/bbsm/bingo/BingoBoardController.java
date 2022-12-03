@@ -1,6 +1,5 @@
 package edu.utdallas.bbsm.bingo;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,28 +12,31 @@ public class BingoBoardController {
     private final BingoBoard board = new BingoBoard();
 
     @RequestMapping(value="/currentBingoBoard", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<String> getCurrentBingoBoard() {
+    public ResponseEntity<BingoBoard> getCurrentBingoBoard() {
         System.out.println(board);
-        return new ResponseEntity<>(board.toString(), HttpStatus.OK);
+        return ResponseEntity.ok(board);
     }
 
-    @RequestMapping(value="/isSubmitted", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<String> isSubmitted(@RequestBody BingoSquare sq) {
-        boolean isFilled = board.isFilled(sq);
-        System.out.println(isFilled);
-        return new ResponseEntity<>(Boolean.toString(isFilled), HttpStatus.OK);
+    @RequestMapping(value="/submission", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<String> submission(@RequestBody BingoSquare sq) {
+        var submission = board.getSubmission(sq);
+        System.out.println(sq.getCol() + " " + sq.getRow() + " " + submission);
+        return ResponseEntity.ok(submission);
     }
 
     @RequestMapping(value="/fillSquare", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<String> fillSquare(@RequestBody BingoSquare sq) {
-        board.fillSquare(sq);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<BingoSubmission> fillSquare(@RequestBody BingoSubmission submission) {
+        if (!board.isInBounds(submission.getSq())) {
+            return ResponseEntity.badRequest().build();
+        }
+        board.fillSquare(submission.getSq(), submission.getSubmission());
+        return ResponseEntity.ok(submission);
     }
 
     @RequestMapping(value="/isCompleted", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<String> isCompleted() {
+    public ResponseEntity<Boolean> isCompleted() {
         boolean isCompleted = board.isCompleted();
         System.out.println(isCompleted);
-        return new ResponseEntity<>(Boolean.toString(isCompleted), HttpStatus.OK);
+        return ResponseEntity.ok(isCompleted);
     }
 }
